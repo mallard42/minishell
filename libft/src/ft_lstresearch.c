@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 17:51:41 by mallard           #+#    #+#             */
-/*   Updated: 2017/04/20 18:00:46 by mallard          ###   ########.fr       */
+/*   Updated: 2017/05/21 17:24:37 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int			ft_lstresearch(int fd, t_list **lst)
 	tmp = ft_lstnew(NULL, 0);
 	tmp->content_size = fd;
 	ft_lstaddend(lst, tmp);
-	lstresearch(fd, lst);
+	ft_lstresearch(fd, lst);
 	return (0);
 }

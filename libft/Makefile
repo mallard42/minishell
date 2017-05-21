@@ -6,14 +6,14 @@
 #    By: mallard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/10 12:22:19 by mallard           #+#    #+#              #
-#    Updated: 2017/04/20 17:56:34 by mallard          ###   ########.fr        #
+#    Updated: 2017/05/21 17:36:27 by mallard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-CYAN = \x1b[36m
-GREEN = \x1b[32m
+CYAN = \033[38;5;30m
+GREEN = \033[38;5;64m
 DEFAULT = \x1b[0m
 
 FLAGS = -Werror -Wall -Wextra
@@ -51,7 +51,8 @@ OBJ = ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o ft_memchr.o \
 	  ft_strsub.o ft_strjoin.o ft_strtrim.o ft_itoa.o ft_abs.o ft_intlen.o \
 	  ft_strsplit.o ft_lstnew.o ft_lstdelone.o ft_lstadd.o ft_lstdel.o \
 	  ft_lstiter.o ft_lstmap.o ft_lstaddend.o ft_swap.o ft_foreach.o \
-	  ft_strcount.o ft_lstsize.o ft_strjoin_f.o
+	  ft_strcount.o ft_lstsize.o ft_strjoin_f.o ft_lstresearch.o \
+	  get_next_line.o
 
 .PHONY : all $(NAME) clean fclean re
 
