@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/05/21 18:35:32 by mallard          ###   ########.fr       */
+/*   Updated: 2017/05/23 16:53:22 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void		command(char *line, char **env)
 		ft_putendl("execution echo");
 	else if (ft_strnstr(line, "cd", 2))
 		ft_putendl("execution cd");
-	else if (ft_strnstr(line, "pwd", 3))
-		ft_putendl("execution pwd");
+	else if (ft_strstr(line, "pwd"))
+		ft_pwd(line);
 	else if (ft_strnstr(line, "setenv", 6))
 		ft_putendl("execution setenv");
 	else if (ft_strnstr(line, "unsetenv", 8))
