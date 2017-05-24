@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/05/23 17:11:38 by mallard          ###   ########.fr       */
+/*   Updated: 2017/05/24 17:59:23 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,26 @@ void		ft_ls(char *line)
 	ft_putendl("execution ls");
 }
 
-void		ft_pwd(char *line)
+void		ft_env(t_env *lst)
 {
-	char	*path;
-	char	*buf;
+	t_env	*tmp;
 
-	path = getcwd(".", 0);
-	ft_putendl(buf);
+	tmp = lst;
+	while (tmp)
+	{
+		ft_putstr(tmp->cat);
+		ft_putchar('=');
+		ft_putendl(tmp->value);
+		tmp = tmp->next;
+	}
+}
+
+void		ft_pwd(t_env *lst)
+{
+	t_env	*tmp;
+
+	tmp = lst;
+	while (tmp && ft_strcmp(tmp->cat, "PWD"))
+		tmp = tmp->next;
+	ft_putendl(tmp->value);
 }
