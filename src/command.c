@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/05/24 17:59:23 by mallard          ###   ########.fr       */
+/*   Updated: 2017/05/31 17:55:05 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,44 @@
 
 void		ft_ls(char *line)
 {
-	ft_putendl(line);
-	ft_putendl("execution ls");
+	char	**str;
+	char	*path;
+	pid_t	f;
+
+	str = ft_strsplit(line, ' ');
+	f = fork();
+	if (f > 0)
+		wait(0);
+	if (f == 0)
+		execve("/bin/ls", str, NULL);
+	if (f < 0)
+		exit(EXIT_FAILURE);
 }
 
-void		ft_env(t_env *lst)
+void		ft_pwd(char *line)
 {
-	t_env	*tmp;
+	char    *path;
+	char	**tab;
+	pid_t   f;
 
-	tmp = lst;
-	while (tmp)
+
+	f = fork();
+	if (f > 0)
+		wait(0);
+	if (f == 0)
+		execve("/bin/pwd", tab, NULL);
+	if (f < 0)
+		exit(EXIT_FAILURE);
+}
+
+void		ft_cd(char *line)
+{
+	char	*tmp;
+
+	if (line[2] != ' ')
+		error_command(line);
+	else
 	{
-		ft_putstr(tmp->cat);
-		ft_putchar('=');
-		ft_putendl(tmp->value);
-		tmp = tmp->next;
+		tmp = ft_strsub(line, 3, ft_strlen(line));
 	}
-}
-
-void		ft_pwd(t_env *lst)
-{
-	t_env	*tmp;
-
-	tmp = lst;
-	while (tmp && ft_strcmp(tmp->cat, "PWD"))
-		tmp = tmp->next;
-	ft_putendl(tmp->value);
 }

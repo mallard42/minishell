@@ -6,7 +6,7 @@
 #    By: mallard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 17:28:15 by mallard           #+#    #+#              #
-#    Updated: 2017/05/24 18:00:12 by mallard          ###   ########.fr        #
+#    Updated: 2017/05/31 15:05:25 by mallard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,9 @@ P = ./src/
 
 LIBFT = ./libft/libft.a
 
-SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)env.c
+SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)error.c
 
-OBJ = main.o command.o tab.o env.o
+OBJ = main.o command.o tab.o error.o
 
 FLAGS = -Werror -Wextra -Wall -g
 
@@ -58,4 +58,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : re all norme $(NAME) clean fclean $(LIBFT)
+.PHONY : re all norme $(NAME) clean fclean $(LIBFT) m

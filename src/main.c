@@ -6,47 +6,63 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/05/24 18:02:07 by mallard          ###   ########.fr       */
+/*   Updated: 2017/05/31 17:55:03 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int		main(int ac, char**av, char **env)
+void	my_prompt(void)
 {
-	char	*line;
-	t_env	*lst;
+	char			*tmp;
 
-	lst = env_to_lst(env);
-	while (42)
-	{
-		ft_putstr("$> ");
-		get_next_line(0, &line);
-		command(line, lst);
-	}
+	tmp = NULL;
+	ft_putstr("\e[38;5;105mMinishell \e[38;5;246m");
+	tmp = getcwd(tmp, 512);
+	ft_putstr(tmp);
+	ft_putstr(" \e[38;5;11m✗ \e[0m"); 
+	free(tmp);
 }
 
-void		command(char *line, t_env *env)
+int		main(void)
 {
+	char			*line;
+	//char			**env;
+
+	//env = env_cpy();
+	while (42)
+	{
+		my_prompt();
+		get_next_line(0, &line);
+		if (*line)
+		{
+			command(line);
+			ft_strdel(&line);
+		}
+	}
+	return (0);
+}
+
+void		command(char *line)
+{
+	extern char		**environ;
+
 	if (!ft_strcmp(line, "exit"))
 		exit(EXIT_SUCCESS);
-	else if (ft_strnstr(line, "ls", 2))
+	else if (!ft_strncmp(line, "ls", 2))
 		ft_ls(line);
-	else if (ft_strnstr(line, "echo", 4))
-		ft_putendl("execution echo");
-	else if (ft_strnstr(line, "cd", 2))
+	else if (!ft_strncmp(line, "pwd", 3))
+		ft_pwd(line);
+	else if (!ft_strncmp(line, "cd", 2))
 		ft_putendl("execution cd");
-	else if (ft_strstr(line, "pwd"))
-		ft_pwd(env);
-	else if (ft_strnstr(line, "setenv", 6))
+	else if (!ft_strncmp(line, "echo", 4))
+		ft_putendl("execution echo");
+	else if (!ft_strncmp(line, "setenv", 6))
 		ft_putendl("execution setenv");
-	else if (ft_strnstr(line, "unsetenv", 8))
+	else if (!ft_strncmp(line, "unsetenv", 8))
 		ft_putendl("execution unsetenv");
-	else if (ft_strnstr(line, "env", 3))
-		ft_env(env);
+	else if (!ft_strncmp(line, "env", 3))
+		print_tab(environ);
 	else
-	{
-		ft_putstr(line);
-		ft_putendl(": command not found");
-	}
+		error_command(line);
 }
