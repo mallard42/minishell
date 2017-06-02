@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/01 18:07:28 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/02 18:09:42 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ void		ft_ls(char *line)
 	pid_t	f;
 
 	str = ft_strsplit(line, ' ');
-	/*f = fork();
+	check_access(&path, str[0]);
+	f = fork();
 	if (f > 0)
 		wait(0);
 	if (f == 0)
-		execve("/bin/ls", str, NULL);
+		execve(path, str, NULL);
 	if (f < 0)
 		exit(EXIT_FAILURE);
-	tabdel(str);*/
-	check_access(&path, str[0]);
-	ft_putendl(path);
 	tabdel(str);
+	ft_strdel(&path);
 }
 
 void		ft_pwd(char *line)
@@ -39,15 +38,17 @@ void		ft_pwd(char *line)
 	pid_t   f;
 
 	tab = ft_strsplit(line, ' ');
+	check_access(&path, tab[0]);
 	if (!tab[1])
 		tab = add_str_to_tab(tab, "-P", 1);
 	f = fork();
 	if (f > 0)
 		wait(0);
 	if (f == 0)
-		execve("/bin/pwd", tab, NULL);
+		execve(path, tab, NULL);
 	if (f < 0)
 		exit(EXIT_FAILURE);
+	ft_strdel(&path);
 	tabdel(tab);
 }
 
@@ -61,4 +62,9 @@ void		ft_cd(char *line)
 	{
 		tmp = ft_strsub(line, 3, ft_strlen(line));
 	}
+}
+
+void		ft_setenv()
+{
+	
 }

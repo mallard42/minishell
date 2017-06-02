@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/01 11:50:57 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/02 14:28:17 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void		command(char *line)
 
 	if (!ft_strcmp(line, "exit"))
 		exit(EXIT_SUCCESS);
-	else if (!ft_strncmp(line, "ls", 2))
+	else if (ft_strstr(line, "ls"))
 		ft_ls(line);
-	else if (!ft_strncmp(line, "pwd", 3))
+	else if (ft_strstr(line, "pwd"))
 		ft_pwd(line);
 	else if (!ft_strncmp(line, "cd", 2))
 		ft_putendl("execution cd");
