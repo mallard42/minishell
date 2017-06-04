@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:52 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/01 18:05:53 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/04 18:28:17 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ void		tabdel(char **tab);
 
 void		ft_ls(char *line);
 void		ft_pwd(char *line);
+void		ft_setenv(char *line);
+void		ft_unsetenv(char *line);
+void		char_del(char **tab, int i);
 
 void		error_command(char *str);
 
 void		check_access(char **str, char *test);
 char		*double_path(char *s1, char *s2);
+int			env_chr(char *test, int size);
 
 #endif

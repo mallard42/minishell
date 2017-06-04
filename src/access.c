@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 16:32:14 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/02 18:09:44 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/04 17:08:34 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void	check_access(char **str, char *test)
 		*str = test;
 	else
 	{
-		i = 0;
-		while (environ[i] && ft_strncmp(environ[i], "PATH", 4))
-			i++;
+		i = env_chr("PATH", 4);
 		tmp = ft_strchr(environ[i], '=') + 1;
 		tab = ft_strsplit(tmp, ':');
 		i = 0;
@@ -47,9 +45,23 @@ void	check_access(char **str, char *test)
 	}
 }
 
+int		env_chr(char *test, int size)
+{
+	extern char		**environ;
+	int				i;
+
+	i = -1;
+	while (environ[++i])
+	{
+		if (!ft_strncmp(environ[i], test, size))
+			return (i);
+	}
+	return (-1);
+}
+
 char    *double_path(char *s1, char *s2)
 {
-	char    *str;
+	char			*str;
 
 	if (!s1 || !s2)
 		return (NULL);

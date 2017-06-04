@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/02 14:28:17 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/04 18:38:35 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void		command(char *line)
 	else if (!ft_strncmp(line, "echo", 4))
 		ft_putendl("execution echo");
 	else if (!ft_strncmp(line, "setenv", 6))
-		ft_putendl("execution setenv");
+		ft_setenv(line);
 	else if (!ft_strncmp(line, "unsetenv", 8))
-		ft_putendl("execution unsetenv");
+		ft_unsetenv(line);
 	else if (!ft_strncmp(line, "env", 3))
 		print_tab(environ);
 	else
