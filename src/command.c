@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/04 18:38:34 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/05 17:49:56 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,41 @@ void    char_del(char **tab, int i)
 		tab[i] = tab[i + 1];
 		i++;
 	}
+}
+
+void		rm_quote(char **str)
+{
+	char			*tmp;
+	int				i;
+
+	if ((*str)[0] == '"')
+	{
+		i = ft_strlen(*str);
+		i = ((*str)[i] == '"') ? i - 1 : i;
+		tmp = ft_strsub(*str, 0, i);
+		ft_strdel(str);
+		*str = tmp;
+	}
+}
+
+void		ft_echo(char *line)
+{
+	char			**tab;
+
+	tab = ft_strsplit(line, ' ');
+	if (tablen(tab) > 1)
+	{
+		if (!ft_strcmp(tab[1], "-n"))
+		{
+			if (tab[2])
+				ft_putstr(tab[2]);
+		}
+		else
+			ft_putendl(tab[2]);
+	}
+	else
+		ft_putstr("\n");
+	tabdel(tab);
 }
 
 void		ft_setenv(char *line)

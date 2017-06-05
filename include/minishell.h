@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:52 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/04 18:28:17 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/05 17:34:43 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void		ft_pwd(char *line);
 void		ft_setenv(char *line);
 void		ft_unsetenv(char *line);
 void		char_del(char **tab, int i);
+void		ft_echo(char *line);
+void		rm_quote(char **str);
 
 void		error_command(char *str);
 
