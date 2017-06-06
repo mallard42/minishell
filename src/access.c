@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 16:32:14 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/04 17:08:34 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/06 18:18:20 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	check_access(char **str, char *test)
 	char			**tab;
 
 	if (access(test, F_OK) == 0)
-		*str = test;
-	else
+		*str = ft_strdup(test);
+	else if (*environ)
 	{
 		i = env_chr("PATH", 4);
 		tmp = ft_strchr(environ[i], '=') + 1;
@@ -43,6 +43,8 @@ void	check_access(char **str, char *test)
 		tabdel(tab);
 		error_command(test);
 	}
+	else
+		ft_putendl("env is not enable");
 }
 
 int		env_chr(char *test, int size)

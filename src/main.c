@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/05 17:49:44 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/06 18:18:18 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,33 @@ int		main(void)
 		my_prompt();
 		get_next_line(0, &line);
 		if (*line)
-			command(line);
+			check(line);
 		ft_strdel(&line);
 	}
 	return (0);
 }
 
-void		command(char *line)
+void		check(char *line)
+{
+	if (!ft_strcmp(line, "exit"))
+		exit(EXIT_SUCCESS);
+	is_built(line);
+}
+
+void		is_built(char *line)
 {
 	extern char		**environ;
 
-		if (!ft_strcmp(line, "exit"))
-			exit(EXIT_SUCCESS);
-		else if (*environ && ft_strstr(line, "ls"))
-			ft_ls(line);
-		else if (ft_strstr(line, "./"))
-			printf("executable\n");
-		else if (*environ && ft_strstr(line, "pwd"))
-			ft_pwd(line);
-		else if (!ft_strncmp(line, "cd", 2))
-			ft_putendl("execution cd");
-		else if (!ft_strncmp(line, "echo", 4))
-			ft_echo(line);
-		else if (*environ && !ft_strncmp(line, "setenv", 6))
-			ft_setenv(line);
-		else if (*environ && !ft_strncmp(line, "unsetenv", 8))
-			ft_unsetenv(line);
-		else if (*environ && !ft_strncmp(line, "env", 3))
-			print_tab(environ);
-		else
-			error_command(line);
+	if (!ft_strncmp(line, "cd", 2))
+		ft_putendl("execution cd");
+	else if (!ft_strncmp(line, "echo", 4))
+		ft_echo(line);
+	else if (!ft_strncmp(line, "setenv", 6))
+		ft_setenv(line);
+	else if (!ft_strncmp(line, "unsetenv", 8))
+		ft_unsetenv(line);
+	else if (!ft_strcmp(line, "env"))
+		print_tab(environ);
+	else
+		is_command(line);
 }
