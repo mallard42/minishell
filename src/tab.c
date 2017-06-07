@@ -30,9 +30,9 @@ void	print_tab(char **tab)
 		ft_putendl("NULL");
 }
 
-char    **newtab(int size)
+char	**newtab(int size)
 {
-	char    **tab;
+	char	**tab;
 
 	if (!(tab = (char **)malloc(sizeof(char *) * (size + 1))))
 		return (0);
@@ -40,9 +40,9 @@ char    **newtab(int size)
 	return (tab);
 }
 
-void    tabdel(char **tab)
+void	tabdel(char **tab)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	while (tab[i] != NULL)
@@ -54,9 +54,9 @@ void    tabdel(char **tab)
 	tab = NULL;
 }
 
-int     tablen(char **tab)
+int		tablen(char **tab)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	if (!tab)
@@ -66,10 +66,10 @@ int     tablen(char **tab)
 	return (i);
 }
 
-char    **add_str_to_tab(char **tab, char *str, int free)
+char	**add_str_to_tab(char **tab, char *str, int free)
 {
-	char    **tmp;
-	int     i;
+	char	**tmp;
+	int		i;
 
 	i = 0;
 	if (!(tmp = newtab(tablen(tab) + 1)))

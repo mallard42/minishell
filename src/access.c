@@ -61,7 +61,7 @@ int		env_chr(char *test, int size)
 	return (-1);
 }
 
-char    *double_path(char *s1, char *s2)
+char	*double_path(char *s1, char *s2)
 {
 	char			*str;
 

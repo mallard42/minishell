@@ -6,13 +6,13 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/06 18:18:18 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/07 11:18:48 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	my_prompt(void)
+void		my_prompt(void)
 {
 	char			*tmp;
 
@@ -20,22 +20,23 @@ void	my_prompt(void)
 	ft_putstr("\e[38;5;105mMinishell \e[38;5;246m");
 	tmp = getcwd(tmp, 512);
 	ft_putstr(tmp);
-	ft_putstr(" \e[38;5;11m✗ \e[0m"); 
+	ft_putstr(" \e[38;5;11m✗ \e[0m");
 	free(tmp);
 }
 
-int		main(void)
+int			main(void)
 {
 	char			*line;
-	//char			**env;
 
-	//env = env_cpy();
 	while (42)
 	{
 		my_prompt();
 		get_next_line(0, &line);
 		if (*line)
+		{
+			line = ft_strtrim(line);
 			check(line);
+		}
 		ft_strdel(&line);
 	}
 	return (0);

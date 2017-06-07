@@ -24,9 +24,9 @@ P = ./src/
 
 LIBFT = ./libft/libft.a
 
-SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)error.c $(P)access.c
+SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)error.c $(P)access.c $(P)ft_split.c
 
-OBJ = main.o command.o tab.o error.o access.o
+OBJ = main.o command.o tab.o error.o access.o ft_split.o
 
 FLAGS = -Werror -Wextra -Wall -g
 

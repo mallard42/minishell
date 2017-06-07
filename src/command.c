@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/06 17:20:28 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/07 11:28:17 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		is_command(char *line)
 
 void		ft_cd(char *line)
 {
-	char	*tmp;
+	char			*tmp;
 
 	if (line[2] != ' ')
 		error_command(line);
@@ -50,10 +50,10 @@ void		ft_cd(char *line)
 
 void		ft_unsetenv(char *line)
 {
-	char            **tab;
-	char            *str;
-	extern char     **environ;
-	int             i;
+	char			**tab;
+	char			*str;
+	extern char		**environ;
+	int				i;
 
 	tab = ft_strsplit(line, ' ');
 	if (tablen(tab) == 2)
@@ -68,10 +68,10 @@ void		ft_unsetenv(char *line)
 	tabdel(tab);
 }
 
-void    char_del(char **tab, int i)
+void		char_del(char **tab, int i)
 {
-	int     size;
-	char    *tmp;
+	int				size;
+	char			*tmp;
 
 	size = tablen(tab);
 	tmp = tab[i];
@@ -91,8 +91,8 @@ void		rm_quote(char **str)
 	if ((*str)[0] == '"')
 	{
 		i = ft_strlen(*str);
-		i = ((*str)[i] == '"') ? i - 1 : i;
-		tmp = ft_strsub(*str, 0, i);
+		i = ((*str)[0] == '"') ? i - 1 : i;
+		tmp = ft_strsub(*str, 1, i - 1);
 		ft_strdel(str);
 		*str = tmp;
 	}
@@ -111,11 +111,11 @@ void		ft_echo(char *line)
 		i = (n == 1) ? 2 : 1;
 		while (tab[i])
 		{
-
+			rm_quote(&(tab[i]));
 			ft_putstr(tab[i]);
 			if (tab[i + 1] == NULL && n == 0)
 				ft_putchar('\n');
-			else
+			else if (tab[i + 1] != NULL)
 				ft_putchar(' ');
 			i++;
 		}

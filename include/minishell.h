@@ -40,4 +40,6 @@ void		check_access(char **str, char *test);
 char		*double_path(char *s1, char *s2);
 int			env_chr(char *test, int size);
 
+char        **ft_split(char const *s);
+
 #endif
