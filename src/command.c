@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/07 11:28:17 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/08 17:43:26 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void		is_command(char *line)
 	pid_t			f;
 
 	path = NULL;
-	str = ft_strsplit(line, ' ');
+	str = ft_split(line);
+	if (str[0] == NULL)
+		return ;
 	check_access(&path, str[0]);
 	if (path)
 	{
@@ -31,21 +33,9 @@ void		is_command(char *line)
 			execve(path, str, environ);
 		if (f < 0)
 			exit(EXIT_FAILURE);
-		tabdel(str);
 		ft_strdel(&path);
 	}
-}
-
-void		ft_cd(char *line)
-{
-	char			*tmp;
-
-	if (line[2] != ' ')
-		error_command(line);
-	else
-	{
-		tmp = ft_strsub(line, 3, ft_strlen(line));
-	}
+	tabdel(str);
 }
 
 void		ft_unsetenv(char *line)
@@ -55,7 +45,8 @@ void		ft_unsetenv(char *line)
 	extern char		**environ;
 	int				i;
 
-	tab = ft_strsplit(line, ' ');
+	if (!(tab = ft_split(line)))
+		return ;
 	if (tablen(tab) == 2)
 	{
 		if ((i = env_chr(tab[1], ft_strlen(tab[1]))) >= 0)
@@ -83,48 +74,6 @@ void		char_del(char **tab, int i)
 	}
 }
 
-void		rm_quote(char **str)
-{
-	char			*tmp;
-	int				i;
-
-	if ((*str)[0] == '"')
-	{
-		i = ft_strlen(*str);
-		i = ((*str)[0] == '"') ? i - 1 : i;
-		tmp = ft_strsub(*str, 1, i - 1);
-		ft_strdel(str);
-		*str = tmp;
-	}
-}
-
-void		ft_echo(char *line)
-{
-	char			**tab;
-	int				i;
-	int				n;
-
-	tab = ft_strsplit(line, ' ');
-	if (tablen(tab) > 1)
-	{
-		n = (!ft_strcmp(tab[1], "-n")) ? 1 : 0;
-		i = (n == 1) ? 2 : 1;
-		while (tab[i])
-		{
-			rm_quote(&(tab[i]));
-			ft_putstr(tab[i]);
-			if (tab[i + 1] == NULL && n == 0)
-				ft_putchar('\n');
-			else if (tab[i + 1] != NULL)
-				ft_putchar(' ');
-			i++;
-		}
-	}
-	else
-		ft_putstr("\n");
-	tabdel(tab);
-}
-
 void		ft_setenv(char *line)
 {
 	char			**tab;
@@ -132,7 +81,8 @@ void		ft_setenv(char *line)
 	extern char		**environ;
 	int				i;
 
-	tab = ft_strsplit(line, ' ');
+	if (!(tab = ft_split(line)))
+		return ;
 	if (tablen(tab) == 3)
 	{
 		str = ft_strjoin(tab[1], "=");

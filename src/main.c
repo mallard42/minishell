@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/07 11:18:48 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/08 15:35:47 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ int			main(void)
 		my_prompt();
 		get_next_line(0, &line);
 		if (*line)
-		{
-			line = ft_strtrim(line);
 			check(line);
-		}
 		ft_strdel(&line);
 	}
 	return (0);
@@ -53,15 +50,15 @@ void		is_built(char *line)
 {
 	extern char		**environ;
 
-	if (!ft_strncmp(line, "cd", 2))
-		ft_putendl("execution cd");
+	if (!ft_strncmp(line, "cd", 2) && *environ)
+		ft_cd(line);
 	else if (!ft_strncmp(line, "echo", 4))
 		ft_echo(line);
-	else if (!ft_strncmp(line, "setenv", 6))
+	else if (!ft_strncmp(line, "setenv", 6) && *environ)
 		ft_setenv(line);
-	else if (!ft_strncmp(line, "unsetenv", 8))
+	else if (!ft_strncmp(line, "unsetenv", 8) && *environ)
 		ft_unsetenv(line);
-	else if (!ft_strcmp(line, "env"))
+	else if (!ft_strcmp(line, "env") && *environ)
 		print_tab(environ);
 	else
 		is_command(line);
