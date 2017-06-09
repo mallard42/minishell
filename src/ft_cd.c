@@ -50,13 +50,15 @@ char        *ft_home(void)
     tmp = NULL;
     tmp = getcwd(tmp, 512);
     tab = ft_strsplit(tmp, '/');
-    print_tab(tab);
     tmp = NULL;
     if (tab[0] && tab[1])
     {
         tmp = ft_strdup("/");
+        tmp = ft_strjoin_f(tmp, tab[0], 0);
+        tmp = ft_strjoin_f(tmp, "/", 0);
+        tmp = ft_strjoin_f(tmp, tab[1], 0);
     }
-        tmp = ft_strjoin(tab[0], tab[1]);
+    tabdel(tmp);
     return (tmp);
 }
 
@@ -89,7 +91,7 @@ void		ft_cd(char *line)
 	if (tablen(tab) >= 1)
 	{
 		if (tablen(tab) == 1)
-			ft_putendl(ft_home());
+			chdir(ft_home());
 		else
 		{
 			if (check_mode(tab[0]) == 1)
