@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/09 17:53:22 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/13 17:43:14 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,50 +22,49 @@ int         check_mode(char *path)
 	return (0);
 }
 
-// void        ft_pwd(void)
-// {
-//     extern char		**environ;
-//     int             i;
-//     char            *tmp;
-//     int             j;
-//
-//     tmp = NULL;
-//     if ((i = env_chr("PWD", 3)) >= 0 && (j = env_chr("OLDPWD", 6)) >= 0)
-//     {
-//         // tmp = environ[j];
-//         // ft_strdel(&tmp);
-//         // environ[i] = ft_strsub(environ[j], 3, ft_strlen(environ[j]) - 3);
-//         tmp = getcwd(tmp, 1024);
-//         ft_putendl(tmp);
-//         // tmp = ft_strjoin("PWD=", tmp);
-//         // environ[i] = tmp;
-//     }
-// }
-
 char        *ft_home(void)
 {
-    char        *tmp;
-    char        **tab;
+	char        *tmp;
+	char        **tab;
 
-    tmp = NULL;
-    tmp = getcwd(tmp, 512);
-    tab = ft_strsplit(tmp, '/');
-    tmp = NULL;
-    if (tab[0] && tab[1])
-    {
-        tmp = ft_strdup("/");
-        tmp = ft_strjoin_f(tmp, tab[0], 0);
-        tmp = ft_strjoin_f(tmp, "/", 0);
-        tmp = ft_strjoin_f(tmp, tab[1], 0);
-    }
-    tabdel(tmp);
-    return (tmp);
+	tmp = NULL;
+	tmp = getcwd(tmp, 512);
+	tab = ft_strsplit(tmp, '/');
+	tmp = NULL;
+	if (tab[0] && tab[1])
+	{
+		tmp = ft_strdup("/");
+		tmp = ft_strjoin_f(tmp, tab[0], 0);
+		tmp = ft_strjoin_f(tmp, "/", 0);
+		tmp = ft_strjoin_f(tmp, tab[1], 0);
+	}
+	tabdel(tab);
+	return (tmp);
 }
 
-char        *path_sup(char *str)
+void		move(char *str, int home)
 {
-	int     i;
-	char    *tmp;
+	if (check_mode(str) == 1)
+	{
+		if (chdir(str) == -1)
+		{
+			ft_putstr("cd: no such file or directory:");
+			ft_putendl(str);
+		}
+		else
+			ft_set_pwd(str, home);
+	}
+	else
+	{
+		ft_putstr("cd: permission denied:");
+		ft_putendl(str);
+	}
+}
+
+char		*path_sup(char *str)
+{
+	int		i;
+	char	*tmp;
 
 	if (str == NULL)
 		return (NULL);
@@ -74,10 +73,42 @@ char        *path_sup(char *str)
 		return (str);
 	while (str[i] && str[i] != '/')
 		i--;
-	if (!ft_strrchr(str, '/'))
-		return (str);
 	tmp = ft_strsub(str, 0, i);
 	return (tmp);
+}
+
+void		ft_set_pwd(char *str, int home)
+{
+	char			*tmp;
+	extern char     **environ;
+	int				i;
+	int				j;
+	char			*t;
+
+	i = env_chr("OLDPWD", 6);
+	j = env_chr("PWD", 3);
+	tmp = environ[j];
+	if (ft_strcmp(str, "-") == 0)
+	{
+		tmp = environ[i];
+		environ[i] = ft_strsub(environ[i], 3, ft_strlen(environ[i]) - 3);
+		ft_strdel(&tmp);
+		environ[j] = ft_strjoin_f("OLD", environ[j], 1);
+	}
+	else
+	{
+		if (ft_strcmp(str, "..") == 0)
+			environ[j] = path_sup(environ[j]);
+		else
+			if (home == 0)
+				environ[j] = double_path(environ[j], str);
+			else
+				environ[j] = ft_strjoin("PWD=", str);
+		t = environ[i];
+		environ[i] = ft_strjoin("OLD", tmp);
+		ft_strdel(&tmp);
+		ft_strdel(&t);
+	}
 }
 
 void		ft_cd(char *line)
@@ -85,27 +116,23 @@ void		ft_cd(char *line)
 	extern char     **environ;
 	char			*tmp;
 	char            **tab;
+	int				i;
 
 	if (!(tab = ft_split(line)))
 		return ;
-	if (tablen(tab) >= 1)
+	if (tablen(tab) == 1)
+		move(ft_home(), 1);
+	else if (tablen(tab) >= 1)
 	{
-		if (tablen(tab) == 1)
-			chdir(ft_home());
-		else
+		if (tab[1] && ft_strcmp(tab[1], "-") == 0)
 		{
-			if (check_mode(tab[0]) == 1)
-				chdir(tab[1]);
-			else
-			{
-				if (tab[1])
-				{
-					ft_putstr("cd: permission denied:");
-					ft_putendl(tab[1]);
-				}
-			}
+			if ((i = env_chr("OLDPWD", 6)) >= 0)
+				move(ft_strchr(environ[i], '=') + 1, 1);
 		}
+		else
+			move(tab[1], 0);
 	}
 	else
 		ft_putendl("usage");
+	tabdel(tab);
 }

@@ -93,7 +93,7 @@ void		ft_setenv(char *line)
 			environ[i] = ft_strdup(str);
 		}
 		else
-			environ = add_str_to_tab(environ, str, 0);
+			environ = add_str_to_tab(environ, str, 1);
 		ft_strdel(&str);
 	}
 	else

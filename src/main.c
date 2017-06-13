@@ -24,10 +24,30 @@ void		my_prompt(void)
 	free(tmp);
 }
 
+void		env_cpy(void)
+{
+	extern char		**environ;
+	char			**env;
+	int				i;
+
+	i = 0;
+	if (!(env = newtab(tablen(environ))))
+		exit(EXIT_FAILURE);
+	while (environ[i])
+	{
+		env[i] = ft_strdup(environ[i]);
+		if (!env[i])
+			exit(EXIT_FAILURE);
+		i++;
+	}
+	environ = env;
+}
+
 int			main(void)
 {
 	char			*line;
 
+	env_cpy();
 	while (42)
 	{
 		my_prompt();

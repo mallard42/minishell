@@ -44,7 +44,9 @@ int         check_mode(char *path);
 void		check_access(char **str, char *test);
 char		*double_path(char *s1, char *s2);
 int			env_chr(char *test, int size);
+void		ft_set_pwd(char *str, int home);
 
 char        **ft_split(char const *s);
+char        *path_sup(char *str);
 
 #endif
