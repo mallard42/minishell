@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/13 17:43:14 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/16 17:27:26 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,27 @@ char		*path_sup(char *str)
 	return (tmp);
 }
 
+char		*ft_path(char *arg)
+{
+	int			i;
+	char		**tab;
+	char		*tmp;
+
+	tmp = NULL;
+	tab = ft_strsplit(arg, '/');
+	i = 0;
+	tmp = getcwd(tmp, 512);
+	while (tab[i])
+	{
+		if (ft_strcmp(tab[i], "..") == 0)
+			tmp = path_sup(tmp);
+		else if (ft_strcmp(tab[i], "."))
+			tmp = double_path(tmp, tab[i]);
+		i++;
+	}
+	return (tmp);
+}
+
 void		ft_set_pwd(char *str, int home)
 {
 	char			*tmp;
@@ -87,27 +108,23 @@ void		ft_set_pwd(char *str, int home)
 
 	i = env_chr("OLDPWD", 6);
 	j = env_chr("PWD", 3);
-	tmp = environ[j];
-	if (ft_strcmp(str, "-") == 0)
+	if (i >= 0 && j >= 0)
 	{
 		tmp = environ[i];
-		environ[i] = ft_strsub(environ[i], 3, ft_strlen(environ[i]) - 3);
+		environ[i] = ft_strjoin("OLD", environ[j]);
 		ft_strdel(&tmp);
-		environ[j] = ft_strjoin_f("OLD", environ[j], 1);
+		tmp = NULL;
+		tmp = getcwd(tmp, 512);
+		t = environ[j];
+		environ[j] = ft_strjoin_f("PWD=", tmp, 1); 
+		ft_strdel(&t);
 	}
 	else
 	{
-		if (ft_strcmp(str, "..") == 0)
-			environ[j] = path_sup(environ[j]);
+		if (j >= 0)
+			environ = add_str_to_tab(environ, ft_strjoin("OLD", environ[j]), 1);
 		else
-			if (home == 0)
-				environ[j] = double_path(environ[j], str);
-			else
-				environ[j] = ft_strjoin("PWD=", str);
-		t = environ[i];
-		environ[i] = ft_strjoin("OLD", tmp);
-		ft_strdel(&tmp);
-		ft_strdel(&t);
+			environ = add_str_to_tab(environ, ft_strjoin("PWD=", ft_path(str)), 1);
 	}
 }
 
@@ -120,7 +137,7 @@ void		ft_cd(char *line)
 
 	if (!(tab = ft_split(line)))
 		return ;
-	if (tablen(tab) == 1)
+	if (tablen(tab) == 1 || (tab[1] && !ft_strcmp(tab[1], "~")))
 		move(ft_home(), 1);
 	else if (tablen(tab) >= 1)
 	{

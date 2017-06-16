@@ -48,5 +48,6 @@ void		ft_set_pwd(char *str, int home);
 
 char        **ft_split(char const *s);
 char        *path_sup(char *str);
+char		*ft_path(char *arg);
 
 #endif
