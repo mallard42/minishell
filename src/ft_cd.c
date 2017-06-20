@@ -6,40 +6,20 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/16 17:27:26 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/20 16:17:46 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int         check_mode(char *path)
+int			check_mode(char *path)
 {
-	struct stat     buf;
+	struct stat		buf;
 
 	lstat(path, &buf);
 	if (buf.st_mode & S_IRUSR)
 		return (1);
 	return (0);
-}
-
-char        *ft_home(void)
-{
-	char        *tmp;
-	char        **tab;
-
-	tmp = NULL;
-	tmp = getcwd(tmp, 512);
-	tab = ft_strsplit(tmp, '/');
-	tmp = NULL;
-	if (tab[0] && tab[1])
-	{
-		tmp = ft_strdup("/");
-		tmp = ft_strjoin_f(tmp, tab[0], 0);
-		tmp = ft_strjoin_f(tmp, "/", 0);
-		tmp = ft_strjoin_f(tmp, tab[1], 0);
-	}
-	tabdel(tab);
-	return (tmp);
 }
 
 void		move(char *str, int home)
@@ -61,47 +41,10 @@ void		move(char *str, int home)
 	}
 }
 
-char		*path_sup(char *str)
-{
-	int		i;
-	char	*tmp;
-
-	if (str == NULL)
-		return (NULL);
-	i = ft_strlen(str) - 1;
-	if (i == 0)
-		return (str);
-	while (str[i] && str[i] != '/')
-		i--;
-	tmp = ft_strsub(str, 0, i);
-	return (tmp);
-}
-
-char		*ft_path(char *arg)
-{
-	int			i;
-	char		**tab;
-	char		*tmp;
-
-	tmp = NULL;
-	tab = ft_strsplit(arg, '/');
-	i = 0;
-	tmp = getcwd(tmp, 512);
-	while (tab[i])
-	{
-		if (ft_strcmp(tab[i], "..") == 0)
-			tmp = path_sup(tmp);
-		else if (ft_strcmp(tab[i], "."))
-			tmp = double_path(tmp, tab[i]);
-		i++;
-	}
-	return (tmp);
-}
-
 void		ft_set_pwd(char *str, int home)
 {
 	char			*tmp;
-	extern char     **environ;
+	extern char		**environ;
 	int				i;
 	int				j;
 	char			*t;
@@ -116,23 +59,21 @@ void		ft_set_pwd(char *str, int home)
 		tmp = NULL;
 		tmp = getcwd(tmp, 512);
 		t = environ[j];
-		environ[j] = ft_strjoin_f("PWD=", tmp, 1); 
+		environ[j] = ft_strjoin_f("PWD=", tmp, 1);
 		ft_strdel(&t);
+		return ;
 	}
+	if (j >= 0)
+		environ = add_str_to_tab(environ, ft_strjoin("OLD", environ[j]), 1);
 	else
-	{
-		if (j >= 0)
-			environ = add_str_to_tab(environ, ft_strjoin("OLD", environ[j]), 1);
-		else
-			environ = add_str_to_tab(environ, ft_strjoin("PWD=", ft_path(str)), 1);
-	}
+		environ = add_str_to_tab(environ, ft_strjoin("PWD=", ft_path(str)), 1);
 }
 
 void		ft_cd(char *line)
 {
-	extern char     **environ;
+	extern char		**environ;
 	char			*tmp;
-	char            **tab;
+	char			**tab;
 	int				i;
 
 	if (!(tab = ft_split(line)))
@@ -150,6 +91,6 @@ void		ft_cd(char *line)
 			move(tab[1], 0);
 	}
 	else
-		ft_putendl("usage");
+		ft_putendl("usage: cd [dir]");
 	tabdel(tab);
 }

@@ -6,11 +6,28 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/08 17:43:26 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/20 16:17:44 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int			tab_chr(char **tab, char *test)
+{
+	int				i;
+
+	i = -1;
+	while (tab[++i])
+	{
+		if (!ft_strcmp(tab[i], test))
+		{
+			ft_strdel(&(tab[i]));
+			tab[i] = ft_strdup(ft_home());
+			return (i);
+		}
+	}
+	return (-1);
+}
 
 void		is_command(char *line)
 {
@@ -23,7 +40,8 @@ void		is_command(char *line)
 	str = ft_split(line);
 	if (str[0] == NULL)
 		return ;
-	check_access(&path, str[0]);
+	tab_chr(str, "~");
+	check_a(&path, str[0]);
 	if (path)
 	{
 		f = fork();
@@ -55,7 +73,7 @@ void		ft_unsetenv(char *line)
 		}
 	}
 	else
-		ft_putendl("usage");
+		ft_putendl("usage: unsetenv [name]");
 	tabdel(tab);
 }
 
@@ -97,6 +115,6 @@ void		ft_setenv(char *line)
 		ft_strdel(&str);
 	}
 	else
-		ft_putendl("usage");
+		ft_putendl("usage: setenv [name] [value]");
 	tabdel(tab);
 }

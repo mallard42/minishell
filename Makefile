@@ -6,7 +6,7 @@
 #    By: mallard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 17:28:15 by mallard           #+#    #+#              #
-#    Updated: 2017/06/08 17:18:16 by mallard          ###   ########.fr        #
+#    Updated: 2017/06/20 16:16:00 by mallard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,14 @@ P = ./src/
 LIBFT = ./libft/libft.a
 
 SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)error.c $(P)access.c \
-	  $(P)ft_split.c $(P)ft_echo.c $(P)ft_cd.c
+	  $(P)ft_split.c $(P)ft_echo.c $(P)ft_cd.c $(P)path.c
 
-OBJ = main.o command.o tab.o error.o access.o ft_split.o ft_echo.o ft_cd.o
+OBJ = main.o command.o tab.o error.o access.o ft_split.o ft_echo.o ft_cd.o \
+	  path.o
 
 FLAGS = -Werror -Wextra -Wall -g
 
-all : $(NAME)
+all : $(NAME) norme 
 
 norme :
 		@echo "$(RED)norme sources et includes$(DEFAULT)"

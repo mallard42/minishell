@@ -6,11 +6,23 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 16:32:14 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/06 18:18:20 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/18 17:54:59 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	check_a(char **str, char *test)
+{
+	extern char		**environ;
+
+	if (access(test, F_OK) == 0)
+		*str = ft_strdup(test);
+	else if (*environ)
+		check_access(str, test);
+	else
+		ft_putendl("env is not enable");
+}
 
 void	check_access(char **str, char *test)
 {
@@ -19,32 +31,25 @@ void	check_access(char **str, char *test)
 	char			*tmp;
 	char			**tab;
 
-	if (access(test, F_OK) == 0)
-		*str = ft_strdup(test);
-	else if (*environ)
+	i = env_chr("PATH", 4);
+	tmp = ft_strchr(environ[i], '=') + 1;
+	tab = ft_strsplit(tmp, ':');
+	i = 0;
+	while (tab[i])
 	{
-		i = env_chr("PATH", 4);
-		tmp = ft_strchr(environ[i], '=') + 1;
-		tab = ft_strsplit(tmp, ':');
-		i = 0;
-		while (tab[i])
+		tmp = double_path(tab[i], test);
+		if (access(tmp, F_OK) == 0)
 		{
-			tmp = double_path(tab[i], test);
-			if (access(tmp, F_OK) == 0)
-			{
-				*str = tmp;
-				tabdel(tab);
-				return ;
-			}
-			else
-				ft_strdel(&tmp);
-			i++;
+			*str = tmp;
+			tabdel(tab);
+			return ;
 		}
-		tabdel(tab);
-		error_command(test);
+		else
+			ft_strdel(&tmp);
+		i++;
 	}
-	else
-		ft_putendl("env is not enable");
+	tabdel(tab);
+	error_command(test);
 }
 
 int		env_chr(char *test, int size)

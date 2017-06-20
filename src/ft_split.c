@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 18:10:03 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/08 11:14:18 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/18 17:07:10 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int		ft_strncount(char const *s, char c, char d)
 	result = 0;
 	while (s[i] != '\0')
 	{
-		if (s[i] == c || ((s[i] == d || s[i + 1] == '\0') && (s[i + 1] != c && s[i + 1] != d)))
+		if (s[i] == c || ((s[i] == d || s[i + 1] == '\0') && \
+					(s[i + 1] != c && s[i + 1] != d)))
 			result++;
 		i++;
 	}
