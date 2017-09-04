@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/03 16:29:03 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/04 14:07:01 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ void		ft_set_pwd(char *str, char *old)
 	extern char		**environ;
 	int				i;
 	int				j;
-	char			*t;
 
-	t = NULL;
 	i = env_chr("PWD", 3);
 	j = env_chr("OLDPWD", 6);
 	if (j >= 0)
@@ -70,14 +68,13 @@ void		ft_set_pwd(char *str, char *old)
 	}
 	else
 		environ = add_str_to_tab(environ, ft_strjoin("OLDPWD=", old), 1);
-	t = getcwd(t, 512);
 	if (i >= 0)
 	{
 		ft_strdel(&(environ[i]));
-		environ[i] = ft_strjoin("PWD=", t);
+		environ[i] = ft_strjoin("PWD=", str);
 	}
 	else
-		environ = add_str_to_tab(environ, ft_strjoin("fjgjiopt", "gmvijgoi"), 1);
+		environ = add_str_to_tab(environ, ft_strjoin("PWD=", str), 1);
 }
 
 void		ft_cd(char *line, char *home)

@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/03 16:29:11 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/04 18:04:38 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void		check(char *line, char *home)
 	tmp = ft_strtrim(line);
 	if (!ft_strcmp(tmp, "exit"))
 		exit(EXIT_SUCCESS);
-	is_built(tmp, home);
+	if (!ft_strncmp(line, "env", 3))
+		ft_env(line);
+	else
+		is_built(tmp, home);
 	ft_strdel(&tmp);
 }
 
@@ -61,7 +64,7 @@ void		is_built(char *line, char *home)
 {
 	extern char		**environ;
 
-	if (!ft_strncmp(line, "cd", 2) /*&& *environ*/)
+	if (!ft_strncmp(line, "cd", 2))
 		ft_cd(line, home);
 	else if (!ft_strncmp(line, "echo", 4))
 		ft_echo(line);
@@ -69,8 +72,6 @@ void		is_built(char *line, char *home)
 		ft_setenv(line);
 	else if (!ft_strncmp(line, "unsetenv", 8) && *environ)
 		ft_unsetenv(line);
-	else if (!ft_strcmp(line, "env") && *environ)
-		print_tab(environ);
 	else
 		is_command(line, home);
 }
@@ -89,15 +90,13 @@ int			main(void)
 	{
 		my_prompt();
 		get_next_line(0, &line);
+		i = -1;
 		if (*line)
 		{
 			tab = ft_strsplit(line, ';');
 			if (*tab)
-			{
-				i = -1;
 				while (tab[++i])
 					check(tab[i], home);
-			}
 			tabdel(tab);
 		}
 		ft_strdel(&line);

@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:52 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/03 14:59:19 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/04 18:04:59 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ char		**newtab(int size);
 void		tabdel(char **tab);
 int			tablen(char **tab);
 char		**add_str_to_tab(char **tab, char *str, int free);
+void		ft_env(char *line);
 
 #endif
