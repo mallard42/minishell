@@ -6,11 +6,14 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/18 17:51:47 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/03 16:29:11 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 void		my_prompt(void)
 {
@@ -43,35 +46,23 @@ void		env_cpy(void)
 	environ = env;
 }
 
-int			main(void)
+void		check(char *line, char *home)
 {
-	char			*line;
+	char		*tmp;
 
-	env_cpy();
-	while (42)
-	{
-		my_prompt();
-		get_next_line(0, &line);
-		if (*line)
-			check(line);
-		ft_strdel(&line);
-	}
-	return (0);
-}
-
-void		check(char *line)
-{
-	if (!ft_strcmp(line, "exit"))
+	tmp = ft_strtrim(line);
+	if (!ft_strcmp(tmp, "exit"))
 		exit(EXIT_SUCCESS);
-	is_built(line);
+	is_built(tmp, home);
+	ft_strdel(&tmp);
 }
 
-void		is_built(char *line)
+void		is_built(char *line, char *home)
 {
 	extern char		**environ;
 
-	if (!ft_strncmp(line, "cd", 2) && *environ)
-		ft_cd(line);
+	if (!ft_strncmp(line, "cd", 2) /*&& *environ*/)
+		ft_cd(line, home);
 	else if (!ft_strncmp(line, "echo", 4))
 		ft_echo(line);
 	else if (!ft_strncmp(line, "setenv", 6) && *environ)
@@ -81,5 +72,36 @@ void		is_built(char *line)
 	else if (!ft_strcmp(line, "env") && *environ)
 		print_tab(environ);
 	else
-		is_command(line);
+		is_command(line, home);
+}
+
+int			main(void)
+{
+	char			*line;
+	int				i;
+	char			**tab;
+	char			*home;
+	extern char		**environ;
+
+	home = ft_home();
+	env_cpy();
+	while (42)
+	{
+		my_prompt();
+		get_next_line(0, &line);
+		if (*line)
+		{
+			tab = ft_strsplit(line, ';');
+			if (*tab)
+			{
+				i = -1;
+				while (tab[++i])
+					check(tab[i], home);
+			}
+			tabdel(tab);
+		}
+		ft_strdel(&line);
+	}
+	tabdel(environ);
+	return (0);
 }

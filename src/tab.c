@@ -6,11 +6,13 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:17:08 by mallard           #+#    #+#             */
-/*   Updated: 2017/05/29 17:09:35 by mallard          ###   ########.fr       */
+/*   Updated: 2017/07/03 23:29:34 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
+#include <stdlib.h>
 
 void	print_tab(char **tab)
 {

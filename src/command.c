@@ -6,53 +6,81 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 18:10:32 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/20 16:17:44 by mallard          ###   ########.fr       */
+/*   Updated: 2017/08/26 14:31:20 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
-int			tab_chr(char **tab, char *test)
+int			tab_chr(char **tab, char *home)
 {
 	int				i;
+	char			*tmp;
+	char			*t;
 
 	i = -1;
 	while (tab[++i])
 	{
-		if (!ft_strcmp(tab[i], test))
+		if ((tmp = ft_strchr(tab[i], '~')))
 		{
-			ft_strdel(&(tab[i]));
-			tab[i] = ft_strdup(ft_home());
-			return (i);
+			t = tab[i];
+			if (!(tab[i] = ft_strdup(home)))
+			{
+				ft_strdel(&t);
+				return (0);
+			}
+			if (tmp + 1 && tmp + 2)
+				tab[i] = ft_strjoin_f(tab[i], tmp + 1, 0);
+			ft_strdel(&t);
 		}
 	}
-	return (-1);
+	return (0);
 }
 
-void		is_command(char *line)
+void		ft_fork(char *path, char **str)
 {
 	extern char		**environ;
-	char			**str;
-	char			*path;
 	pid_t			f;
 
-	path = NULL;
-	str = ft_split(line);
-	if (str[0] == NULL)
-		return ;
-	tab_chr(str, "~");
-	check_a(&path, str[0]);
 	if (path)
 	{
 		f = fork();
 		if (f > 0)
 			wait(0);
 		if (f == 0)
-			execve(path, str, environ);
+		{
+			if ((execve(path, str, environ)) == -1)
+			{
+				error_command(path);
+				exit(EXIT_SUCCESS);
+			}
+		}
 		if (f < 0)
 			exit(EXIT_FAILURE);
 		ft_strdel(&path);
 	}
+}
+
+void		is_command(char *line, char *home)
+{
+	char			**str;
+	char			*path;
+
+	path = NULL;
+	str = ft_split(line);
+	if (str[0] == NULL)
+	{
+		tabdel(str);
+		return ;
+	}
+	tab_chr(str, home);
+	check_a(&path, str[0]);
+	if (!ft_strcmp(str[0], "./minishell"))
+		ft_shlvl();
+	ft_fork(path, str);
 	tabdel(str);
 }
 
@@ -73,23 +101,8 @@ void		ft_unsetenv(char *line)
 		}
 	}
 	else
-		ft_putendl("usage: unsetenv [name]");
+		ft_putendl_fd("usage: unsetenv [name]", 2);
 	tabdel(tab);
-}
-
-void		char_del(char **tab, int i)
-{
-	int				size;
-	char			*tmp;
-
-	size = tablen(tab);
-	tmp = tab[i];
-	ft_strdel(&tmp);
-	while (i < size)
-	{
-		tab[i] = tab[i + 1];
-		i++;
-	}
 }
 
 void		ft_setenv(char *line)
@@ -115,6 +128,6 @@ void		ft_setenv(char *line)
 		ft_strdel(&str);
 	}
 	else
-		ft_putendl("usage: setenv [name] [value]");
+		ft_putendl_fd("usage: setenv [name] [value]", 2);
 	tabdel(tab);
 }

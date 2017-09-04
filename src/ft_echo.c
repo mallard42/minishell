@@ -6,11 +6,12 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:15:28 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/20 16:08:39 by mallard          ###   ########.fr       */
+/*   Updated: 2017/06/22 14:44:18 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
 
 void		rm_quote(char **str)
 {

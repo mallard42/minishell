@@ -6,7 +6,7 @@
 #    By: mallard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 17:28:15 by mallard           #+#    #+#              #
-#    Updated: 2017/06/20 16:16:00 by mallard          ###   ########.fr        #
+#    Updated: 2017/09/02 17:30:30 by mallard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,36 +15,42 @@ GREEN = \033[38;5;82m
 RED = \033[38;5;208m
 DEFAULT = \x1b[0m
 
-TOOLS = \xU+1F6E0
-TRASH = \xU+1F5D1
-
 NAME = minishell
-
-P = ./src/
 
 LIBFT = ./libft/libft.a
 
-SRC = $(P)main.c $(P)command.c $(P)tab.c $(P)error.c $(P)access.c \
-	  $(P)ft_split.c $(P)ft_echo.c $(P)ft_cd.c $(P)path.c
+SRC = main.c command.c tab.c error.c access.c ft_split.c ft_echo.c ft_cd.c \
+	  path.c env.c
 
-OBJ = main.o command.o tab.o error.o access.o ft_split.o ft_echo.o ft_cd.o \
-	  path.o
+SRCS = $(addprefix src/, $(SRC));
 
-FLAGS = -Werror -Wextra -Wall -g
+OBJ = $(SRC:.c=.o)
 
-all : $(NAME) norme 
+FLAGS = -Werror -Wextra -Wall
+
+all : $(NAME)
 
 norme :
-		@echo "$(RED)norme sources et includes$(DEFAULT)"
+		@echo "$(RED)     .-') _            _  .-') _   .-')      ('-."
+		@echo "    ( OO ) )          ( \( -O ( '.( OO )_  _(  OO)"
+		@echo ",--./ ,--,' .-'),-----.,------.,--.   ,--.(,------."
+		@echo "|   \ |  |\( OO'  .-.  |   /\`. |   \`.'   | |  .---'"
+		@echo "|    \|  | /   |  | |  |  /  | |         | |  |"
+		@echo "|  .     |/\_) |  |\|  |  |_.' |  |'.'|  |(|  '--."
+		@echo "|  |\    |   \ |  | |  |  .  '.|  |   |  | |  .--'"
+		@echo "|  | \   |    \`'  '-'  |  |\  \|  |   |  | |  \`---."
+		@echo "\`--'  \`--'      \`-----'\`--' '--\`--'   \`--' \`------'"
+		@echo "$(DEFAULT)"
 		@norminette ./include libft/include
-		@norminette $(SRC) libft/src
+		@norminette $(SRCS)
+		@norminette libft/src
 
 $(LIBFT) :
 		@$(MAKE) -C ./libft
 
 $(NAME) : $(LIBFT)
 		@echo "$(PURPLE)build $(NAME)$(DEFAULT)"
-		@gcc -c $(SRC)
+		@gcc -c $(SRCS)
 		@gcc $(FLAGS) -o $(NAME) $(OBJ) $(LIBFT)
 
 clean :
@@ -60,4 +66,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : re all norme $(NAME) clean fclean $(LIBFT) m
+.PHONY : re all norme clean fclean

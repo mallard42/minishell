@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
 
 static int		ft_strncount(char const *s, char c, char d)
 {

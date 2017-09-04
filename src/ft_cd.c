@@ -6,11 +6,14 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/06/20 16:17:46 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/03 16:29:03 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../libft/include/libft.h"
+#include <sys/stat.h>
+#include <unistd.h>
 
 int			check_mode(char *path)
 {
@@ -24,52 +27,60 @@ int			check_mode(char *path)
 
 void		move(char *str, int home)
 {
+	char		*tmp;
+	char		*tmp2;
+
+	tmp = NULL;
+	tmp2 = NULL;
 	if (check_mode(str) == 1)
 	{
+		tmp = getcwd(tmp, 512);
 		if (chdir(str) == -1)
 		{
-			ft_putstr("cd: no such file or directory:");
+			ft_putstr_fd("cd: no such file or directory:", 2);
 			ft_putendl(str);
 		}
 		else
-			ft_set_pwd(str, home);
+		{
+			tmp2 = getcwd(tmp2, 512);
+			ft_set_pwd(tmp2, tmp);
+		}
 	}
 	else
 	{
-		ft_putstr("cd: permission denied:");
+		ft_putstr_fd("cd: permission denied:", 2);
 		ft_putendl(str);
 	}
 }
 
-void		ft_set_pwd(char *str, int home)
+void		ft_set_pwd(char *str, char *old)
 {
-	char			*tmp;
 	extern char		**environ;
 	int				i;
 	int				j;
 	char			*t;
 
-	i = env_chr("OLDPWD", 6);
-	j = env_chr("PWD", 3);
-	if (i >= 0 && j >= 0)
-	{
-		tmp = environ[i];
-		environ[i] = ft_strjoin("OLD", environ[j]);
-		ft_strdel(&tmp);
-		tmp = NULL;
-		tmp = getcwd(tmp, 512);
-		t = environ[j];
-		environ[j] = ft_strjoin_f("PWD=", tmp, 1);
-		ft_strdel(&t);
-		return ;
-	}
+	t = NULL;
+	i = env_chr("PWD", 3);
+	j = env_chr("OLDPWD", 6);
 	if (j >= 0)
-		environ = add_str_to_tab(environ, ft_strjoin("OLD", environ[j]), 1);
+	{
+		ft_strdel(&(environ[j]));
+		environ[j] = ft_strjoin("OLDPWD=", old);
+	}
 	else
-		environ = add_str_to_tab(environ, ft_strjoin("PWD=", ft_path(str)), 1);
+		environ = add_str_to_tab(environ, ft_strjoin("OLDPWD=", old), 1);
+	t = getcwd(t, 512);
+	if (i >= 0)
+	{
+		ft_strdel(&(environ[i]));
+		environ[i] = ft_strjoin("PWD=", t);
+	}
+	else
+		environ = add_str_to_tab(environ, ft_strjoin("fjgjiopt", "gmvijgoi"), 1);
 }
 
-void		ft_cd(char *line)
+void		ft_cd(char *line, char *home)
 {
 	extern char		**environ;
 	char			*tmp;
@@ -78,8 +89,9 @@ void		ft_cd(char *line)
 
 	if (!(tab = ft_split(line)))
 		return ;
+	tab_chr(tab, home);
 	if (tablen(tab) == 1 || (tab[1] && !ft_strcmp(tab[1], "~")))
-		move(ft_home(), 1);
+		move(home, 1);
 	else if (tablen(tab) >= 1)
 	{
 		if (tab[1] && ft_strcmp(tab[1], "-") == 0)
@@ -91,6 +103,6 @@ void		ft_cd(char *line)
 			move(tab[1], 0);
 	}
 	else
-		ft_putendl("usage: cd [dir]");
+		ft_putendl_fd("usage: cd [dir]", 2);
 	tabdel(tab);
 }

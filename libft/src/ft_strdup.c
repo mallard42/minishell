@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 16:22:57 by mallard           #+#    #+#             */
-/*   Updated: 2016/11/21 16:01:55 by mallard          ###   ########.fr       */
+/*   Updated: 2017/07/04 05:28:51 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char		*ft_strdup(char *src)
 	char	*str;
 	int		i;
 
+	if (src == NULL)
+		return (NULL);
 	i = 0;
 	while (src[i])
 		i++;
