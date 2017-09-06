@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/04 18:04:38 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/06 16:23:33 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int			main(void)
 		my_prompt();
 		get_next_line(0, &line);
 		i = -1;
+		if (!*line)
+			return (1);
 		if (*line)
 		{
 			tab = ft_strsplit(line, ';');
