@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:48:12 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/06 16:23:33 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/09 17:53:45 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,32 +48,31 @@ void		env_cpy(void)
 
 void		check(char *line, char *home)
 {
-	char		*tmp;
+	char			*tmp;
+	extern char		**environ;
 
 	tmp = ft_strtrim(line);
-	if (!ft_strcmp(tmp, "exit"))
-		exit(EXIT_SUCCESS);
-	if (!ft_strncmp(line, "env", 3))
-		ft_env(line);
-	else
-		is_built(tmp, home);
+	if (!ft_strcmp(tmp, "exit")){
+		exit(EXIT_SUCCESS);}
+	else if (!ft_strncmp(tmp, "env", 3)){
+		ft_env(line);}
+	else{
+		is_built(tmp, home, environ);}
 	ft_strdel(&tmp);
 }
 
-void		is_built(char *line, char *home)
+void		is_built(char *line, char *home, char **env)
 {
-	extern char		**environ;
-
 	if (!ft_strncmp(line, "cd", 2))
-		ft_cd(line, home);
+		ft_cd(line, home, env);
 	else if (!ft_strncmp(line, "echo", 4))
 		ft_echo(line);
-	else if (!ft_strncmp(line, "setenv", 6) && *environ)
-		ft_setenv(line);
-	else if (!ft_strncmp(line, "unsetenv", 8) && *environ)
-		ft_unsetenv(line);
+	else if (!ft_strncmp(line, "setenv", 6))
+		ft_setenv(line, env);
+	else if (!ft_strncmp(line, "unsetenv", 8))
+		ft_unsetenv(line, env);
 	else
-		is_command(line, home);
+		is_command(line, home, env);
 }
 
 int			main(void)
@@ -91,18 +90,20 @@ int			main(void)
 		my_prompt();
 		get_next_line(0, &line);
 		i = -1;
-		if (!*line)
-			return (1);
+		/*if (!*line)
+			return (1);*/
 		if (*line)
 		{
 			tab = ft_strsplit(line, ';');
 			if (*tab)
+			{
 				while (tab[++i])
 					check(tab[i], home);
+			}
 			tabdel(tab);
 		}
 		ft_strdel(&line);
 	}
-	tabdel(environ);
+	//tabdel(environ);
 	return (0);
 }

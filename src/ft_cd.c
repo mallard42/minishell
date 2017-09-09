@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 17:04:31 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/04 14:07:01 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/09 15:13:39 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			check_mode(char *path)
 	return (0);
 }
 
-void		move(char *str, int home)
+void		move(char *str, int home, char **environ)
 {
 	char		*tmp;
 	char		*tmp2;
@@ -43,7 +43,7 @@ void		move(char *str, int home)
 		else
 		{
 			tmp2 = getcwd(tmp2, 512);
-			ft_set_pwd(tmp2, tmp);
+			ft_set_pwd(tmp2, tmp, environ);
 		}
 	}
 	else
@@ -53,9 +53,8 @@ void		move(char *str, int home)
 	}
 }
 
-void		ft_set_pwd(char *str, char *old)
+void		ft_set_pwd(char *str, char *old, char **environ)
 {
-	extern char		**environ;
 	int				i;
 	int				j;
 
@@ -77,9 +76,8 @@ void		ft_set_pwd(char *str, char *old)
 		environ = add_str_to_tab(environ, ft_strjoin("PWD=", str), 1);
 }
 
-void		ft_cd(char *line, char *home)
+void		ft_cd(char *line, char *home, char **env)
 {
-	extern char		**environ;
 	char			*tmp;
 	char			**tab;
 	int				i;
@@ -88,16 +86,16 @@ void		ft_cd(char *line, char *home)
 		return ;
 	tab_chr(tab, home);
 	if (tablen(tab) == 1 || (tab[1] && !ft_strcmp(tab[1], "~")))
-		move(home, 1);
+		move(home, 1, env);
 	else if (tablen(tab) >= 1)
 	{
 		if (tab[1] && ft_strcmp(tab[1], "-") == 0)
 		{
 			if ((i = env_chr("OLDPWD", 6)) >= 0)
-				move(ft_strchr(environ[i], '=') + 1, 1);
+				move(ft_strchr(env[i], '=') + 1, 1, env);
 		}
 		else
-			move(tab[1], 0);
+			move(tab[1], 0, env);
 	}
 	else
 		ft_putendl_fd("usage: cd [dir]", 2);

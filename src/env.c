@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/02 17:30:15 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/04 18:26:02 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/09 17:48:07 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,24 @@ void			ft_env(char *line)
 {
 	extern char		**environ;
 	char			**tmp;
+	char			*str;
+	char			*n;
 
+	n = NULL;
 	if (!(tmp = ft_split(line)))
 		return ;
 	if (tablen(tmp) == 1)
 		print_tab(environ);
 	else
 	{
-		if (!ft_strcmp(tmp[1], "-u"))
+		str = ft_strtrim(tmp[1]);
+		if (!ft_strcmp(str, "-u"))
 		{
 			if (tablen(tmp) == 3)
 				ft_u(tmp[2]);
 		}
-		else if (!ft_strcmp(tmp[1], "-i"))
-			ft_putendl("option -i");
-		else if (!ft_strcmp(tmp[1], "-S"))
-			ft_putendl("option -S");
+		else if (!ft_strcmp(str, "-i"))
+			is_built(ft_strtrim(ft_strchr(line, '-') + 2), "/Users/mallard", &n);
 		else
 			ft_putendl("usage : ");
 	}

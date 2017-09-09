@@ -6,7 +6,7 @@
 /*   By: mallard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 16:32:14 by mallard           #+#    #+#             */
-/*   Updated: 2017/09/02 15:04:22 by mallard          ###   ########.fr       */
+/*   Updated: 2017/09/09 17:52:42 by mallard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_a(char **str, char *test)
 		check_access(str, test, i);
 	}
 	else
-		ft_putendl("env is not enable");
+		ft_putendl_fd("env is not enable", 2);
 }
 
 void	check_access(char **str, char *test, int i)
